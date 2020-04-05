@@ -51,6 +51,10 @@ main = do
 
     putStrLn (show [1,1,1,2,2,3,4,5]++" without repeats: "++show (removeDuplicates [1,1,1,2,2,3,4,5]))
 
+    putStrLn ("first 100 fib numbers: ")
+
+    mapM (\x -> putStrLn (show (fib x))) [0..99]
+
     return Nothing
 
 lastElement x = last x
@@ -84,8 +88,8 @@ removeDuplicates list
         then removeDuplicates (tail list)
         else concat [[head list], removeDuplicates (tail list)]
 
-pack :: [a] -> NestedList a
-pack list
-    | length list == 0 = None
-    | length list == 1 = Elem (head list)
-    | otherwise = []
+fib :: Integer -> Integer
+fib x
+    | x == 0 = 0
+    | x == 1 = 1
+    | otherwise = (fib (x - 1)) + (fib (x - 2))
