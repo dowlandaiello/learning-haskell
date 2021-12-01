@@ -4,8 +4,11 @@
 -- one or no elements left
 qsort :: (Ord a) => [a] -> [a]
 qsort [] = []
-qsort (a:as) = 
+qsort (a:as) = (qsort lt) ++ (p:(qsort gte))
+        where (lt, p, gte) = partition [] a [] as
 
-partition :: (Ord a) => a -> [a] -> ([a], a, [a])
-partition p (x:xs)
-
+partition :: (Ord a) => [a] -> a -> [a] -> [a] -> ([a], a, [a])
+partition lt p gte (x:xs)
+        | x < p = partition (x:lt) p gte xs
+        | otherwise = partition lt p (x:gte) xs
+partition lt p gte [] = (lt, p, gte)
