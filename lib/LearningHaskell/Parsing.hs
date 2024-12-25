@@ -11,9 +11,17 @@ type Error = String
 just :: (Eq a, Show a) => a -> Parser a a
 just a = \e ->
     let reasonExpected = "found " ++ show e ++ "; expected " ++ show a
-     in if e == a then Right a else Left reasonExpected
+     in if e == a then pure a else Left reasonExpected
 
 map :: (b -> c) -> Parser a b -> Parser a c
 map = (.) . fmap
 
+repeated :: Int -> Parser a b -> Parser [a] [b]
+repeated n p = sequence . Prelude.map p . take n
+
+-- Parser one element after another
+andThen :: Parser a b -> Parser a c -> Parser [a] (b, c)
+andThen pA pB = \elems -> case elems of
+  (a:b:_) -> liftA2 (,) (pA a) (pB b)
+  allE -> Left $ "found " ++ show (length allE) ++ "; expected at least 2 elems"
 
