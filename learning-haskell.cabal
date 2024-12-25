@@ -30,10 +30,26 @@ test-suite test-parsing
         HUnit ^>=1.6.2.0,
         learning-haskell-lib
 
-executable rpl-calculator
-    main-is:          Main.hs
-    other-modules:    Parser
+library rpl-lib
+    exposed-modules:  LibRpl, LibRpl.Parser.Parser, LibRpl.Parser.Lexer
     hs-source-dirs:   rpl-calculator
     default-language: Haskell2010
     ghc-options:      -Wall
     build-depends:    base ^>=4.18.2.1, learning-haskell-lib
+
+executable rpl-calculator
+    main-is:          Main.hs
+    hs-source-dirs:   rpl-calculator
+    default-language: Haskell2010
+    ghc-options:      -Wall
+    build-depends:    base ^>=4.18.2.1, rpl-lib, learning-haskell-lib
+
+test-suite test-rpl
+    type:          exitcode-stdio-1.0
+    main-is:       tests/test_rpl.hs
+    build-depends:
+        base ^>=4.18.2.1,
+        HUnit ^>=1.6.2.0,
+        learning-haskell-lib,
+        rpl-lib
+
