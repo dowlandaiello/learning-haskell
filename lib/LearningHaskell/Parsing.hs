@@ -1,5 +1,7 @@
 module LearningHaskell.Parsing where
 
+import Data.Char
+
 -- Any function that can combine multiple inputs of one type into an output of
 -- another type, possibly failing
 type Parser a b = a -> Either Error b
@@ -14,8 +16,8 @@ just a = \e ->
      in if e == a then pure a else Left reasonExpected
 
 -- Convert a parsed element into another element
-map :: (b -> c) -> Parser a b -> Parser a c
-map = (.) . fmap
+mapWith :: (b -> c) -> Parser a b -> Parser a c
+mapWith = (.) . fmap
 
 -- Parse multiple occurrences of an element
 repeated :: Int -> Parser a b -> Parser [a] [b]
@@ -28,5 +30,15 @@ andThen pA pB = \elems -> case elems of
   allE -> Left $ "found " ++ show (length allE) ++ "; expected at least 2 elems"
 
 -- Tries one parser on an input or another on failure
-or :: Parser a b -> Parser a b -> Parser a b
-or pA pB = \e -> either (const $ pB e) pure (pA e)
+orParse :: Parser a b -> Parser a b -> Parser a b
+orParse pA pB = \e -> either (const $ pB e) pure (pA e)
+
+-- Parser that discards its input, producing an error message
+failWith :: String -> Parser a b
+failWith msg = const $ Left msg
+
+-- Parses ascii digits
+digit :: Parser Char Int
+digit = foldl (\acc x -> orParse x acc) (failWith "is not a valid digit") parsers
+  where parsers = [mapWith (const i) (just $ chr i) | i <- [0..9]]
+
