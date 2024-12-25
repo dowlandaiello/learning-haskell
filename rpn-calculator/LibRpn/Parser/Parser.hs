@@ -1,6 +1,6 @@
-module LibRpl.Parser.Parser where
+module LibRpn.Parser.Parser where
 import qualified LearningHaskell.Parsing as P
-import qualified LibRpl.Parser.Lexer as L
+import qualified LibRpn.Parser.Lexer as L
 
 data Expr = Num Int | Add Expr Expr | Sub Expr Expr | Mul Expr Expr | Div Expr Expr
   deriving Eq

@@ -1,4 +1,4 @@
-module LibRpl.Parser.Lexer where
+module LibRpn.Parser.Lexer where
 import LearningHaskell.Parsing
 import Data.Maybe
 

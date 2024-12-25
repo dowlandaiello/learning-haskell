@@ -1,7 +1,7 @@
  module Main where
 
-import qualified LibRpl.Parser.Lexer as L
-import qualified LibRpl.Parser.Parser as P
+import qualified LibRpn.Parser.Lexer as L
+import qualified LibRpn.Parser.Parser as P
 import System.Exit (exitFailure)
 import Test.HUnit
 import Data.Either
